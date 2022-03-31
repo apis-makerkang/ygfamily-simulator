@@ -2,6 +2,19 @@
 <html>
 
 <head>
+ 
+  <script>
+    var useLocalAPIs = false;
+    
+    // three places for customization
+    // Customization1: API URL
+    if (useLocalAPIs) {
+      var apiSite="http://localhost:5000/";
+    } else {
+      var apiSite="https://ygfamily-body-composition.herokuapp.com/";  
+    }    
+  </script>
+   
   <title>模擬器 V0.51</title>
   <meta name="msapplication-tap-highlight" content="no" />
 
@@ -27,8 +40,25 @@
   <h2 class="NotoSansFont" style="text-align:center">身體組分析儀 模擬機 V0.6</h2>
   
   <div style="width:50%">
-  <select id="machineSN_select" style="font-size:18px;  margin-top: 2px; height:35px" class="NotoSansFont" onchange="changeMachine()">   
+  <select id="machineSN_select" style="font-size:18px;  margin-top: 2px; height:35px" class="NotoSansFont" onchange="changeMachine()">
+<!--
+    <option value="T20001664">打鐵 永和店 T20001664</option>
+    <option value="T20001665">打鐵 林森店 T20001665</option> 
+    <option value="T20001669">打鐵 松山店 T20001669</option> 
+           
+    <option value="T19002845">打鐵 府中店 T19002845</option>           
+    <option value="T20001670">打鐵 土城店 T20001670</option>
+    <option value="T20001667">打鐵 錦州店 T20001667</option>
+    <option value="T20001668">打鐵 三重店 T20001668</option>  
+         
+    <option value="T20002687">啟德 測試機台 T20002687</option>      
+    <option value="T99999999">啟德 開發機台 T99999999</option>      
+    <option value="T21003317">即刻體能     T21003317</option>   
+    <option value="T22000599">潮州三星社區發展協會     T22000599</option>         
+-->
+    <!-- Customization2&3: Machine S/N and belonged place -->
     <option value="T20002687">有根家族     T20002687</option>      
+    
 
   </select>
         
@@ -92,10 +122,7 @@
  
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
- 
-  <script>
-    var useLocalAPIs = false;
-  </script>
+
 <!--
   <script src="3-controllers/functions.js"></script>
   <script src="1-models/data-process.js"></script>
@@ -110,11 +137,7 @@
     var inputError = false;    
     var powerIsOn =false;
     var res;
-    if (useLocalAPIs) {
-      var apiSite="http://localhost:5000/";
-    } else {
-      var apiSite="https://ygfamily-charder-api.herokuapp.com/"; 
-    }
+
     
     var paramToSend;   
     
@@ -157,12 +180,19 @@
     }
      
     var dataToPost = {
-      "power_onT20002687": { // for 有根家族測試
+      "power_onT20002687": {
         "Timestamp":Date.now(),
         "status":"power_on",
         "Model": "MA801",
         "APPVer":"V59",
         "SN": "T20002687"
+      },      
+      "power_onT18000001": {
+        "Timestamp":Date.now(),
+        "status":"power_on",
+        "Model": "MA801",
+        "APPVer":"V59",
+        "SN": "T18000001"
       },
       
       "power_onT00000002": {
@@ -343,7 +373,7 @@
         powerIsOn = false;
       } else {
         powerIsOn = true;
-        //postStatus("power_on"+$("#machineSN_select").val());
+        postStatus("power_on"+$("#machineSN_select").val());
         
         $("#powerStatusIcon").css("background-color", "lawngreen");  
         console.log("power_on"+$("#machineSN_select").val());
